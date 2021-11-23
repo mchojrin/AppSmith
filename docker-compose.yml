@@ -1,0 +1,41 @@
+version: "3"
+
+services:
+  appsmith:
+    image: index.docker.io/appsmith/appsmith-ce
+    container_name: appsmith
+    ports:
+      - "80:80"
+      - "443:443"
+      - "9001:9001"
+    volumes:
+      - ./stacks:/appsmith-stacks
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
+
+  auto_update:
+    image: containrrr/watchtower:latest-dev
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    # Update check interval in seconds.
+    command: --interval 300 --label-enable --cleanup
+
+  mysql:
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_PASSWORD=root
+      - MYSQL_DATABASE=ecommerce
+      - MYSQL_USER=symfony
+
+  symfony:
+    build:
+      context: phpdocker
+    volumes:
+      - './symfony:/application'
+      - './phpdocker/xdebug.ini:/etc/php/8.0/cli/conf.d/20-xdebug.ini'
+      - './phpdocker/error_reporting.ini:/etc/php/8.0/cli/conf.d/10-error_reporting.ini'
+    environment:
+      - XDEBUG_TRIGGER=yes
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
