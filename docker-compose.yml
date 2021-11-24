@@ -24,7 +24,7 @@ services:
     image: mysql:5.7
     environment:
       - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_PASSWORD=root
+      - MYSQL_PASSWORD=symfony
       - MYSQL_DATABASE=ecommerce
       - MYSQL_USER=symfony
 
