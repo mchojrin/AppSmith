@@ -35,6 +35,7 @@ services:
       - './symfony:/application'
       - './phpdocker/xdebug.ini:/etc/php/8.0/cli/conf.d/20-xdebug.ini'
       - './phpdocker/error_reporting.ini:/etc/php/8.0/cli/conf.d/10-error_reporting.ini'
+      - '/run/snapd.socket:/run/snapd.socket'
     environment:
       - XDEBUG_TRIGGER=yes
     extra_hosts:
