@@ -10,11 +10,9 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
 use App\Scraper\Scraper;
 use App\Sources\TigerDirect;
 use Symfony\Component\HttpClient\HttpClient;
-use Symfony\Component\DomCrawler;
 
 #[AsCommand(
     name: 'app:scrap-commerce',
@@ -34,35 +32,26 @@ class ScrapCommerceCommand extends Command
         $this->entityManager = $entityManager;
     }
 
-    protected function configure(): void
-    {
-        $this
-            ->addArgument('arg1', InputArgument::OPTIONAL, 'Argument description')
-            ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description')
-        ;
-    }
-
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $io = new SymfonyStyle($input, $output);
-        $output->writeln('Scrapping from eCommerce sites');
         $sources = [
             new NewEgg(),
+            new TigerDirect(),
         ];
 
         $scraper = new Scraper(HttpClient::create());
         foreach ($sources as $source) {
-            $output->writeln('Scraping from ' . $source);
+            $output->write('Scraping from ' . $source.'...');
             $products = $scraper->scrap($source);
-            $output->writeln('Found ' . $products->count() . ' products:');
-        }
-
-        foreach ($products as $product) {
-            $this->entityManager->persist($product);
+            $output->writeln(' ... Found ' . $products->count() . ' products');
+            foreach ($products as $product) {
+                $this->entityManager->persist($product);
+            }
         }
 
         $this->entityManager->flush();
 
+        $output->writeln('Products saved to the database');
         return Command::SUCCESS;
     }
 }
