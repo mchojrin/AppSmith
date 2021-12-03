@@ -30,8 +30,7 @@ class Product
     private $description;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Source::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column (type="text")
      */
     private $source;
 
@@ -74,12 +73,12 @@ class Product
         return $this;
     }
 
-    public function getSource(): ?Source
+    public function getSource(): ?string
     {
         return $this->source;
     }
 
-    public function setSource(?Source $source): self
+    public function setSource(?string $source): self
     {
         $this->source = $source;
 

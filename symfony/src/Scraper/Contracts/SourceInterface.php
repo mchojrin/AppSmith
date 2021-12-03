@@ -7,6 +7,7 @@ interface SourceInterface extends \Stringable
     public function getName(): string;
     public function getWrapperSelector(): string;
     public function getDescriptionSelector(): string;
+    public function getItemIdSelector(): string;
     public function getImageSelector(): string;
     public function getPriceSelector(): string;
 }

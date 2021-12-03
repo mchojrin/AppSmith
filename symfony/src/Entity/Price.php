@@ -57,7 +57,7 @@ class Price
 
     public function setAmount(string $amount): self
     {
-        $this->amount = $amount;
+        $this->amount = preg_replace("/[^0-9.]/", "",$amount);
 
         return $this;
     }

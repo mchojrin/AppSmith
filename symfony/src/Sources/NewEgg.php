@@ -4,35 +4,31 @@ namespace App\Sources;
 
 use App\Scraper\Contracts\SourceInterface;
 
-class TigerDirect implements SourceInterface
+class NewEgg implements SourceInterface
 {
     public function getUrl(): string
     {
-        return 'https://www.tigerdirect.com/applications/category/category_slc.asp?Recs=10&Nav=|c:2627|&Sort=4';
+        return 'https://www.newegg.com/Laptops-Notebooks/Category/ID-223?cm_sp=Tab_Computer-Systems_1-_-VisNav-_-Laptop-Notebooks_2';
     }
 
     public function getName(): string
     {
-        return 'TigerDirect';
+        return 'NewEgg';
     }
 
     public function getWrapperSelector(): string
     {
-        return '.each-sku';
+        return 'div.item-cell';
     }
 
     public function getDescriptionSelector(): string
     {
-        return 'a.sku-namecategory';
-    }
-    public function getLinkSelector(): string
-    {
-        return 'div.text-content a:nth-child(2)';
+        return 'a.item-title';
     }
 
     public function getImageSelector(): string
     {
-        return 'a.itemImage img';
+        return 'a.item-img img';
     }
 
     public function __toString(): string
@@ -42,6 +38,11 @@ class TigerDirect implements SourceInterface
 
     public function getPriceSelector(): string
     {
-        return 'p.price';
+        return 'li.price-current strong';
+    }
+
+    public function getItemIdSelector(): string
+    {
+        return 'ul.item-features li:nth-child(4)';
     }
 }

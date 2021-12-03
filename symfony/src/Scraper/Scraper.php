@@ -25,10 +25,6 @@ class Scraper
         $client = $this->client;
         $crawler = new Crawler($client->request('GET', $source->getUrl())->getContent());
 
-        $expectedProductCount = $crawler
-            ->filter($source->getWrapperSelector())
-            ->count();
-
         $today = new \DateTimeImmutable();
 
         $crawler
@@ -36,8 +32,9 @@ class Scraper
             ->each(function (Crawler $c) use ($source, &$collection, $today) {
                 $product = new Product();
 
-                $description = ($c->filter($source->getDescriptionSelector())->text());
-                $product->setDescription($description);
+                $product->setDescription($c->filter($source->getDescriptionSelector())->text());
+                $product->setItemId($c->filter($source->getItemIdSelector())->text());
+                $product->setSource(get_class($source));
 
                 $price = new Price();
                 $price

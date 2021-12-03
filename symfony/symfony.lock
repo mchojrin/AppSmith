@@ -136,6 +136,9 @@
     "symfony/doctrine-bridge": {
         "version": "v5.3.11"
     },
+    "symfony/dom-crawler": {
+        "version": "v5.3.7"
+    },
     "symfony/dotenv": {
         "version": "v5.3.10"
     },
@@ -184,6 +187,9 @@
             "src/Controller/.gitignore",
             "src/Kernel.php"
         ]
+    },
+    "symfony/http-client": {
+        "version": "v5.3.11"
     },
     "symfony/http-client-contracts": {
         "version": "v2.5.0"
