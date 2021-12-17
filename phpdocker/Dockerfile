@@ -1,13 +1,11 @@
-FROM phpdockerio/php:8.0-cli
+FROM php:8-fpm
 
 RUN apt-get update && \
-    apt-get install -y git zip php8.0-xdebug php8.0-mysql
+    apt-get install -y git zip
 
-RUN curl -LO https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-RUN apt-get install -y ./google-chrome-stable_current_amd64.deb
-RUN rm google-chrome-stable_current_amd64.deb
+RUN docker-php-ext-install mysqli pdo pdo_mysql
 
 RUN curl --silent --show-error https://getcomposer.org/installer | php && \
     mv composer.phar /usr/local/bin/composer
 
-WORKDIR /application
+WORKDIR /symfony
