@@ -4,14 +4,12 @@ namespace App\Command;
 
 use App\Entity\Price;
 use App\Entity\Product;
-use App\Sources\Zones;
-use App\Sources\NewEgg;
+use App\SourcesCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use App\Sources\TigerDirect;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpClient\HttpClient;
 
@@ -19,31 +17,28 @@ use Symfony\Component\HttpClient\HttpClient;
     name: 'app:scrap-commerce',
     description: 'Add a short description for your command',
 )]
+
 class ScrapCommerceCommand extends Command
 {
     private EntityManagerInterface $entityManager;
+    private SourcesCollection $sourcesCollection;
 
     /**
      * @param EntityManagerInterface $entityManager
      * @param string|null $name
      */
-    public function __construct(EntityManagerInterface $entityManager, string $name = null)
+    public function __construct(EntityManagerInterface $entityManager, SourcesCollection $sourcesCollection, string $name = null)
     {
         parent::__construct($name);
         $this->entityManager = $entityManager;
+        $this->sourcesCollection = $sourcesCollection;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $sources = [
-            new NewEgg(),
-            new TigerDirect(),
-            new Zones(),
-        ];
-
         $client = HttpClient::create();
         $today = new \DateTimeImmutable();
-        foreach ($sources as $source) {
+        foreach ($this->sourcesCollection->getSources() as $source) {
             $output->write('Scraping from "' . $source->getName() . '"');
             $crawler = new Crawler($client->request('GET', $source->getUrl())->getContent());
 

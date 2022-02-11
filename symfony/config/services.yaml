@@ -20,6 +20,14 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
             - '../src/Tests/'
-
+    App\SourcesCollection:
+        arguments:
+           - !tagged_iterator app.product_source
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    #
+    _instanceof:
+        App\Scraper\Contracts\SourceInterface:
+          tags: ['app.product_source']
+
+   
