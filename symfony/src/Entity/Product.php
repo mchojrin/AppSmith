@@ -7,36 +7,17 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=ProductRepository::class)
- */
+#[ORM\Entity(repositoryClass: ProductRepository::class)]
 class Product
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\Column(type: "string", length: 255)]
+    private $itemId;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $ItemId;
-
-    /**
-     * @ORM\Column(type="text")
-     */
-    private $description;
-
-    /**
-     * @ORM\Column (type="text")
-     */
+    #[ORM\Column(type: "text")]
     private $source;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Price::class, mappedBy="product", orphanRemoval=true, cascade={"persist"})
-     */
+    #[ORM\OneToMany(targetEntity: Price::class, mappedBy: "product", orphanRemoval: true, cascade: ["persist"])]
     private $prices;
 
     public function __construct()
@@ -44,31 +25,14 @@ class Product
         $this->prices = new ArrayCollection();
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
     public function getItemId(): ?string
     {
-        return $this->ItemId;
+        return $this->itemId;
     }
 
-    public function setItemId(string $ItemId): self
+    public function setItemId(string $itemId): self
     {
-        $this->ItemId = $ItemId;
-
-        return $this;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(string $description): self
-    {
-        $this->description = $description;
+        $this->itemId = $itemId;
 
         return $this;
     }

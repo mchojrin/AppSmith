@@ -8,7 +8,7 @@ class NewEgg implements SourceInterface
 {
     public function getUrl(): string
     {
-        return 'https://www.newegg.com/Laptops-Notebooks/Category/ID-223?cm_sp=Tab_Computer-Systems_1-_-VisNav-_-Laptop-Notebooks_2';
+        return 'https://www.newegg.com/p/1TS-000D-0JG62';
     }
 
     public function getName(): string
@@ -16,33 +16,32 @@ class NewEgg implements SourceInterface
         return 'NewEgg';
     }
 
-    public function getWrapperSelector(): string
-    {
-        return 'div.item-cell';
-    }
-
-    public function getDescriptionSelector(): string
-    {
-        return 'a.item-title';
-    }
-
-    public function getImageSelector(): string
-    {
-        return 'a.item-img img';
-    }
-
-    public function __toString(): string
-    {
-        return $this->getName();
-    }
-
     public function getPriceSelector(): string
     {
-        return 'li.price-current strong';
+        return '.price-current strong';
     }
 
     public function getItemIdSelector(): string
     {
-        return 'ul.item-features li:nth-child(4)';
+        return 'ol.breadcrumb em';
+    }
+
+
+    /**
+     * @param string $html
+     * @return int
+     */
+    public function extractPriceFromHTML(string $html): float
+    {
+        return floatval(str_replace(',', '', $html));
+    }
+
+    /**
+     * @param string $html
+     * @return string
+     */
+    public function extractItemIdFromHTML(string $html): string
+    {
+        return $html;
     }
 }
