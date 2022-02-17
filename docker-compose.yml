@@ -27,6 +27,10 @@ services:
       - MYSQL_PASSWORD=symfony
       - MYSQL_DATABASE=ecommerce
       - MYSQL_USER=symfony
+    volumes:
+      - ./mysql:/var/lib/mysql
+    ports:
+      - "3333:3306"
 
   symfony:
     image: php:8-fpm
